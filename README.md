@@ -58,6 +58,12 @@ Project workspaces are stored in the app's `Projects` folder beside the running 
 | Space + drag | Pan the viewport |
 | Middle mouse drag | Pan the viewport |
 
-## Credits and ownership
+## Credits
+
+- **Zayden Rahman** — Main programmer and project lead, shaping the core editor and growing Easytorier into a more capable level studio.
+- **Ghosted** — Programming help.
+- **DC** — Programmer's close friend.
+
+## Ownership and attribution
 
 Easytorier is an independent project. Vector is owned by Nekki, and the rights to Vectorier belong to DoritoTheChips and Sol. Easytorier is not affiliated with them.
