@@ -1,182 +1,228 @@
-﻿<Window x:Class="Easytorier.MainWindow"
+<Window x:Class="Easytorier.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Easytorier Level Editor" Height="768" Width="1366"
-        Background="{StaticResource BgDark}">
-
+        Title="Easytorier — Level Studio" Height="820" Width="1440" MinHeight="620" MinWidth="980"
+        Background="{DynamicResource BgDark}" Foreground="{DynamicResource TextPrimary}" WindowStartupLocation="CenterScreen"
+        PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp">
     <Grid>
-        <Grid.RowDefinitions>
-            <!-- Menu Bar -->
-            <RowDefinition Height="30"/>
-            <!-- Top Action Bar -->
-            <RowDefinition Height="40"/>
-            <!-- Main Workspace -->
-            <RowDefinition Height="*"/>
-            <!-- Status & Timeline Bar -->
-            <RowDefinition Height="28"/>
-        </Grid.RowDefinitions>
-
-        <!-- MENU BAR -->
-        <Menu Grid.Row="0" Background="{StaticResource BgHeader}" Foreground="{StaticResource TextPrimary}" Padding="4,2">
-            <MenuItem Header="EASYTORIER" Foreground="{StaticResource AccentBlue}" FontWeight="Bold"/>
-            <MenuItem Header="File">
-                <MenuItem Header="New Level"/>
-                <MenuItem Header="Open XML..."/>
-                <MenuItem Header="Save XML"/>
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="28"/></Grid.RowDefinitions>
+        <Menu Grid.Row="0" Background="{DynamicResource BgHeader}" Foreground="{DynamicResource TextPrimary}">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New Level" InputGestureText="Ctrl+N" Click="OnNewLevel"/>
+                <MenuItem Header="_Open…" InputGestureText="Ctrl+O" Click="OnOpenLevel"/>
+                <MenuItem Header="_Save" InputGestureText="Ctrl+S" Click="OnSaveLevel"/>
+                <MenuItem Header="Save _As…" Click="OnSaveAsLevel"/>
+                <Separator/>
+                <MenuItem Header="Import _Vectorier XML…" Click="OnImportXml"/>
+                <MenuItem Header="Compile to Vectorier XML…" Click="OnExportXml"/>
+                <Separator/><MenuItem Header="E_xit" Click="OnExit"/>
             </MenuItem>
-            <MenuItem Header="Edit"/>
-            <MenuItem Header="View"/>
-            <MenuItem Header="Level"/>
-            <MenuItem Header="Settings">
-                <MenuItem Header="Theme Manager..." Click="OnOpenThemeManager"/>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" Click="OnUndo"/>
+                <MenuItem Header="_Redo" InputGestureText="Ctrl+Y" Click="OnRedo"/>
+                <Separator/><MenuItem Header="_Duplicate" InputGestureText="Ctrl+D" Click="OnDuplicate"/>
+                <MenuItem Header="_Delete" InputGestureText="Delete" Click="OnDelete"/>
+            </MenuItem>
+            <MenuItem Header="_Project" Click="OnOpenProjectManagerClick"/>
+            <MenuItem Header="_View">
+                <MenuItem Header="_Theme Editor…" Click="OnOpenThemeEditor"/>
+                <MenuItem Header="_Parallax Layers…" Click="OnOpenParallaxEditor"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_Credits…" Click="OnOpenCredits"/>
+                <MenuItem Header="About Easytorier" Click="OnAbout"/>
             </MenuItem>
         </Menu>
+        <Border Grid.Row="1" Background="{DynamicResource BgHeader}" BorderBrush="{DynamicResource BorderDark}" BorderThickness="0,1,0,1" Padding="10,7">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button Content="New" Style="{StaticResource DarkButton}" Padding="12,6" Margin="0,0,6,0" Click="OnNewLevel"/>
+                    <Button Content="Open" Style="{StaticResource DarkButton}" Padding="12,6" Margin="0,0,6,0" Click="OnOpenLevel"/>
+                    <Button Content="Save" Style="{StaticResource PrimaryButton}" Padding="14,6" Margin="0,0,16,0" Click="OnSaveLevel"/>
+                    <Button Content="↶ Undo" Style="{StaticResource DarkButton}" Padding="10,6" Margin="0,0,5,0" Click="OnUndo"/>
+                    <Button Content="↷ Redo" Style="{StaticResource DarkButton}" Padding="10,6" Margin="0,0,16,0" Click="OnRedo"/>
 
-        <!-- TOP ACTION / TOOLBAR -->
-        <Border Grid.Row="1" Background="{StaticResource BgHeader}" BorderBrush="{StaticResource BorderDark}" BorderThickness="0,0,0,1" Padding="10,0">
-            <Grid>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Content="Select" Style="{StaticResource DarkButton}" Margin="0,0,6,0" Click="OnSelectToolClick"/>
-                    <Button Content="Wall" Style="{StaticResource DarkButton}" Margin="0,0,6,0" Click="OnWallToolClick"/>
-                    <Button Content="Obstacle" Style="{StaticResource DarkButton}" Margin="0,0,6,0" Click="OnObstacleToolClick"/>
-                    <Button Content="Trigger" Style="{StaticResource DarkButton}" Margin="0,0,16,0" Click="OnTriggerToolClick"/>
+                    <Button Content="Compile XML…" Style="{StaticResource PrimaryButton}" Padding="12,6" Click="OnExportXml" Margin="0,0,8,0"/>
+                    <Button Content="Test Preview" Style="{StaticResource DarkButton}" Padding="12,6" Click="OnPreview"/>
                 </StackPanel>
-                <Button Content="▶ Test in Vector" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="14,6"/>
-            </Grid>
+                <TextBlock x:Name="LevelNameLabel" Text="Untitled Level" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            </DockPanel>
         </Border>
-
-        <!-- MAIN WORKSPACE -->
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="240" MinWidth="180" MaxWidth="400"/>
-                <ColumnDefinition Width="4"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="4"/>
-                <ColumnDefinition Width="320" MinWidth="240" MaxWidth="450"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- Left Panel: Objects & Tools -->
-            <Border Grid.Column="0" Background="{StaticResource BgPanel}" BorderBrush="{StaticResource BorderDark}" BorderThickness="0,0,1,0" Padding="12">
-                <StackPanel>
-                    <TextBlock Text="SCENE OBJECTS" Foreground="{StaticResource TextMuted}" FontWeight="Bold" FontSize="11" Margin="0,0,0,12"/>
-                    <Button Content="+ Platform" Style="{StaticResource DarkButton}" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
-                    <Button Content="+ Obstacle" Style="{StaticResource DarkButton}" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
-                    <Button Content="+ Spawn Point" Style="{StaticResource DarkButton}" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
-                    <Button Content="+ Rail / Zip" Style="{StaticResource DarkButton}" HorizontalAlignment="Stretch"/>
-                </StackPanel>
-            </Border>
-
-            <!-- Left Splitter -->
-            <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" Background="{StaticResource BorderDark}" Cursor="SizeWE" ResizeDirection="Columns" ShowsPreview="True"/>
-
-            <!-- Center Viewport Canvas -->
-            <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="#141414">
-                <Canvas x:Name="LevelViewport" Width="4000" Height="2000" Background="#181818">
-                    <!-- Level items render dynamically here -->
-                </Canvas>
-            </ScrollViewer>
-
-            <!-- Right Splitter -->
-            <GridSplitter Grid.Column="3" Width="4" HorizontalAlignment="Stretch" Background="{StaticResource BorderDark}" Cursor="SizeWE" ResizeDirection="Columns" ShowsPreview="True"/>
-
-            <!-- Right Panel: Hierarchy, Properties & Hybrid AI Co-pilot -->
-            <Border Grid.Column="4" Background="{StaticResource BgPanel}" BorderBrush="{StaticResource BorderDark}" BorderThickness="1,0,0,0" Padding="10">
+        <TabControl Grid.Row="2" Margin="6">
+            <TabItem Header="Level Editor">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <!-- Hierarchy Tree Top -->
-                        <RowDefinition Height="130"/>
-                        <RowDefinition Height="Auto"/>
-                        <!-- Properties Section -->
-                        <RowDefinition Height="130"/>
-                        <RowDefinition Height="Auto"/>
-                        <!-- Hybrid AI Co-pilot Section -->
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- Hierarchy Tree -->
+                    <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="5"/><RowDefinition Height="150" MinHeight="90" MaxHeight="340"/></Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="230" MinWidth="190"/><ColumnDefinition Width="5"/><ColumnDefinition Width="*" MinWidth="360"/><ColumnDefinition Width="5"/><ColumnDefinition Width="280" MinWidth="230"/></Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="{DynamicResource BgPanel}" Padding="10">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+                        <TextBlock Text="CREATE" Foreground="{DynamicResource TextMuted}" FontWeight="Bold" FontSize="11" Margin="2,2,0,8"/>
+                        <TextBox x:Name="SearchBox" TextChanged="OnSearchChanged" ToolTip="Search tools" Padding="7" Margin="0,0,0,6" Background="{DynamicResource BgInput}" Foreground="{DynamicResource TextPrimary}" BorderBrush="{DynamicResource BorderDark}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Bottom" Margin="0,8,0,0">
+                        <TextBlock Text="QUICK BUILD" Foreground="{DynamicResource TextMuted}" FontWeight="Bold" FontSize="10" Margin="2,0,0,4"/>
+                        <UniformGrid Columns="2">
+                            <Button Content="Parkour" Style="{StaticResource DarkButton}" Padding="7,5" Margin="1" Click="OnGenerateRoute"/>
+                            <Button Content="Clear" Style="{StaticResource DarkButton}" Padding="7,5" Margin="1" Click="OnClearLevel"/>
+                        </UniformGrid>
+                    </StackPanel>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <UniformGrid x:Name="Palette" Columns="2">
+                            <Button Tag="Platform" Content="▰ Platform" ToolTip="Place a platform" Style="{StaticResource DarkButton}" Padding="5" Margin="2" Click="OnChooseTool"/>
+                            <Button Tag="Roof" Content="⌃ Roof" Style="{StaticResource DarkButton}" Padding="5" Margin="2" Click="OnChooseTool"/>
+                            <Button Tag="Obstacle" Content="■ Obstacle" Style="{StaticResource DarkButton}" Padding="5" Margin="2" Click="OnChooseTool"/>
+                            <Button Tag="Trigger" Content="◇ Trigger" Style="{StaticResource DarkButton}" Padding="5" Margin="2" Click="OnChooseTool"/>
+                            <Button Tag="Zipline" Content="╱ Zipline" Style="{StaticResource DarkButton}" Padding="5" Margin="2" Click="OnChooseTool"/>
+                            <Button Tag="Spawn" Content="✦ Spawn" Style="{StaticResource DarkButton}" Padding="5" Margin="2" Click="OnChooseTool"/>
+                            <Button Tag="Area" Content="▧ Area" Style="{StaticResource DarkButton}" Padding="5" Margin="2" Click="OnChooseTool"/>
+                            <Button Tag="Camera" Content="◉ Camera" Style="{StaticResource DarkButton}" Padding="5" Margin="2" Click="OnChooseTool"/>
+                            <Button Tag="Image" Content="▣ Textures" Style="{StaticResource DarkButton}" Padding="5" Margin="2" Click="OnChooseTool"/>
+                            <Button Tag="Trapezoid" Content="⏢ Trapezoid" Style="{StaticResource DarkButton}" Padding="5" Margin="2" Click="OnChooseTool"/>
+                            <Button Tag="Item" Content="◆ Item" Style="{StaticResource DarkButton}" Padding="5" Margin="2" Click="OnChooseTool"/>
+                            <Button Tag="Model" Content="⬡ Model" Style="{StaticResource DarkButton}" Padding="5" Margin="2" Click="OnChooseTool"/>
+                            <Button Tag="Particle" Content="✣ Particle" Style="{StaticResource DarkButton}" Padding="5" Margin="2" Click="OnChooseTool"/>
+                            <Button Tag="Animation" Content="▶ Animation" Style="{StaticResource DarkButton}" Padding="5" Margin="2" Click="OnChooseTool"/>
+                        </UniformGrid>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
+            <GridSplitter Grid.Column="1" Width="5" Background="{DynamicResource BorderDark}" HorizontalAlignment="Stretch" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" ShowsPreview="True"/>
+            <Border Grid.Column="2" Background="{DynamicResource BgCanvas}" Padding="12">
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+                        <Button x:Name="SelectModeButton" Tag="Select" Content="Select" ToolTip="Select objects without moving them" Style="{StaticResource DarkButton}" Padding="9,5" Margin="0,0,4,0" Click="OnChooseTool"/>
+                        <Button x:Name="MoveModeButton" Tag="Move" Content="Move" ToolTip="Move selected objects" Style="{StaticResource PrimaryButton}" Padding="9,5" Margin="0,0,4,0" Click="OnChooseTool"/>
+                        <Button x:Name="ResizeModeButton" Tag="Resize" Content="Resize" ToolTip="Drag to change width and height" Style="{StaticResource DarkButton}" Padding="9,5" Margin="0,0,4,0" Click="OnChooseTool"/>
+                        <Button x:Name="ScaleModeButton" Tag="Scale" Content="Scale" ToolTip="Drag horizontally to scale proportionally" Style="{StaticResource DarkButton}" Padding="9,5" Margin="0,0,4,0" Click="OnChooseTool"/>
+                        <Button x:Name="RotateModeButton" Tag="Rotate" Content="Rotate" ToolTip="Drag horizontally to rotate" Style="{StaticResource DarkButton}" Padding="9,5" Margin="0,0,8,0" Click="OnChooseTool"/>
+                        <CheckBox x:Name="GridToggle" Content="Grid" IsChecked="True" Checked="OnTimelineChanged" Unchecked="OnTimelineChanged" Foreground="{DynamicResource TextPrimary}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <ToggleButton x:Name="SnapToggle" Content="Snap" IsChecked="True" ToolTip="Snap moves and transforms to the selected grid spacing" Foreground="{DynamicResource TextPrimary}" Background="{DynamicResource BgPanel}" BorderBrush="{DynamicResource BorderDark}" Padding="8,4" Margin="0,0,4,0"/>
+                        <ComboBox x:Name="GridSizeBox" Width="58" SelectedIndex="1" SelectionChanged="OnGridSizeChanged" ToolTip="Grid snap spacing" Margin="0,0,6,0"><ComboBoxItem Content="8"/><ComboBoxItem Content="16"/><ComboBoxItem Content="32"/><ComboBoxItem Content="64"/></ComboBox>
+                        <Button Content="−" ToolTip="Zoom out" Style="{StaticResource DarkButton}" Padding="8,5" Click="OnZoomOut"/>
+                        <Button x:Name="ZoomLabelButton" Content="100%" ToolTip="Reset zoom" Style="{StaticResource DarkButton}" Padding="8,5" Click="OnZoomReset"/>
+                        <Button Content="+" ToolTip="Zoom in" Style="{StaticResource DarkButton}" Padding="8,5" Click="OnZoomIn"/>
+                        <Button Content="Fit" ToolTip="Fit the level canvas in view" Style="{StaticResource DarkButton}" Padding="8,5" Margin="4,0,0,0" Click="OnZoomFit"/>
+                    </StackPanel>
+                    <ScrollViewer x:Name="ViewportScrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" PreviewMouseDown="Viewport_PreviewMouseDown" PreviewMouseMove="Viewport_PreviewMouseMove" PreviewMouseUp="Viewport_PreviewMouseUp">
+                    <Canvas x:Name="LevelViewport" Width="1800" Height="1100" AllowDrop="True" DragOver="Viewport_DragOver" Drop="Viewport_Drop" MouseLeftButtonDown="Viewport_MouseLeftButtonDown" MouseMove="Viewport_MouseMove" MouseLeftButtonUp="Viewport_MouseLeftButtonUp">
+                        <Canvas.Background>
+                            <DrawingBrush TileMode="Tile" Viewport="0,0,32,32" ViewportUnits="Absolute" Opacity="0.65">
+                                <DrawingBrush.Drawing><DrawingGroup><GeometryDrawing Brush="{DynamicResource GridBase}" Geometry="M0,0 H32 V32 H0 Z"/><GeometryDrawing Brush="{DynamicResource GridLine}"><GeometryDrawing.Geometry><GeometryGroup><LineGeometry StartPoint="0,31.5" EndPoint="32,31.5"/><LineGeometry StartPoint="31.5,0" EndPoint="31.5,32"/></GeometryGroup></GeometryDrawing.Geometry></GeometryDrawing></DrawingGroup></DrawingBrush.Drawing>
+                            </DrawingBrush>
+                        </Canvas.Background>
+                    </Canvas>
+                </ScrollViewer>
+                        </Grid>
+                    </Border>
+            <GridSplitter Grid.Column="3" Width="5" Background="{DynamicResource BorderDark}" HorizontalAlignment="Stretch" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" ShowsPreview="True"/>
+            <Border Grid.Column="4" Background="{DynamicResource BgPanel}" Padding="10">
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <StackPanel Grid.Row="0">
-                        <TextBlock Text="HIERARCHY" Foreground="{StaticResource TextMuted}" FontWeight="Bold" FontSize="11" Margin="0,0,0,6"/>
-                        <Border Background="{StaticResource BgHeader}" BorderBrush="{StaticResource BorderDark}" BorderThickness="1" CornerRadius="4" Padding="8" Height="90">
-                            <TreeView Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource TextPrimary}">
-                                <TreeViewItem Header="World" IsExpanded="True">
-                                    <TreeViewItem Header="Player Start"/>
-                                    <TreeViewItem Header="Hunter Start"/>
-                                    <TreeViewItem Header="Roof_Building_01"/>
-                                </TreeViewItem>
-                            </TreeView>
+                        <TextBlock Text="LEVEL OBJECTS" Foreground="{DynamicResource TextMuted}" FontWeight="Bold" FontSize="11" Margin="2,2,0,8"/>
+                        <ListBox x:Name="ObjectList" Height="190" SelectionChanged="OnObjectSelected" Background="{DynamicResource BgHeader}" Foreground="{DynamicResource TextPrimary}" BorderBrush="{DynamicResource BorderDark}"/>
+                        <Separator Margin="0,10"/>
+                        <TextBlock Text="INSPECTOR" Foreground="{DynamicResource TextMuted}" FontWeight="Bold" FontSize="11" Margin="2,0,0,8"/>
+                        <TextBox x:Name="ObjectNameBox" IsEnabled="False" ToolTip="Object name" Padding="6" Margin="0,0,0,8" Background="{DynamicResource BgInput}" Foreground="{DynamicResource TextPrimary}" BorderBrush="{DynamicResource BorderDark}" TextChanged="OnPropertyChanged"/>
+                        <UniformGrid Columns="2" Rows="3">
+                            <StackPanel Margin="0,0,5,6"><TextBlock Text="X" Foreground="{DynamicResource TextMuted}"/><TextBox x:Name="XBox" IsEnabled="False" Padding="5" Background="{DynamicResource BgInput}" Foreground="{DynamicResource TextPrimary}" TextChanged="OnPropertyChanged"/></StackPanel>
+                            <StackPanel Margin="5,0,0,6"><TextBlock Text="Y" Foreground="{DynamicResource TextMuted}"/><TextBox x:Name="YBox" IsEnabled="False" Padding="5" Background="{DynamicResource BgInput}" Foreground="{DynamicResource TextPrimary}" TextChanged="OnPropertyChanged"/></StackPanel>
+                            <StackPanel Margin="0,0,5,0"><TextBlock Text="Width" Foreground="{DynamicResource TextMuted}"/><TextBox x:Name="WidthBox" IsEnabled="False" Padding="5" Background="{DynamicResource BgInput}" Foreground="{DynamicResource TextPrimary}" TextChanged="OnPropertyChanged"/></StackPanel>
+                            <StackPanel Margin="5,0,0,0"><TextBlock Text="Height" Foreground="{DynamicResource TextMuted}"/><TextBox x:Name="HeightBox" IsEnabled="False" Padding="5" Background="{DynamicResource BgInput}" Foreground="{DynamicResource TextPrimary}" TextChanged="OnPropertyChanged"/></StackPanel>
+                            <StackPanel Margin="0,6,5,0"><TextBlock Text="Rotation" Foreground="{DynamicResource TextMuted}"/><TextBox x:Name="RotationBox" IsEnabled="False" Padding="5" Background="{DynamicResource BgInput}" Foreground="{DynamicResource TextPrimary}" TextChanged="OnPropertyChanged"/></StackPanel>
+                            <StackPanel Margin="5,6,0,0"><TextBlock Text="Tint (hex)" Foreground="{DynamicResource TextMuted}"/><TextBox x:Name="ColorBox" IsEnabled="False" Padding="5" Background="{DynamicResource BgInput}" Foreground="{DynamicResource TextPrimary}" TextChanged="OnPropertyChanged"/></StackPanel>
+                        </UniformGrid>
+                        <Border Background="{DynamicResource BgHeader}" BorderBrush="{DynamicResource BorderDark}" BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,8,0,0">
+                            <StackPanel>
+                                <TextBlock Text="TEXTURE COLLISION" Foreground="{DynamicResource TextMuted}" FontWeight="Bold" FontSize="10" Margin="0,0,0,5"/>
+                                <CheckBox x:Name="TextureCollisionToggle" Content="Solid collision under this image" IsEnabled="False" Checked="OnTextureCollisionChanged" Unchecked="OnTextureCollisionChanged" Foreground="{DynamicResource TextPrimary}"/>
+                                <TextBlock Text="Creates a Vector Platform proxy matching the rotated texture bounds." Foreground="{DynamicResource TextMuted}" FontSize="10" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                <UniformGrid Columns="2" Margin="0,8,0,0">
+                                    <StackPanel Margin="0,0,5,0"><TextBlock Text="Image type" Foreground="{DynamicResource TextMuted}" FontSize="10"/><ComboBox x:Name="ImageTypeBox" IsEnabled="False" SelectionChanged="OnImageSettingsChanged"><ComboBoxItem Content="None"/><ComboBoxItem Content="Static"/><ComboBoxItem Content="Vanishing"/><ComboBoxItem Content="Dynamic"/></ComboBox></StackPanel>
+                                    <StackPanel Margin="5,0,0,0"><TextBlock Text="Depth" Foreground="{DynamicResource TextMuted}" FontSize="10"/><ComboBox x:Name="ImageDepthBox" IsEnabled="False" SelectionChanged="OnImageSettingsChanged"><ComboBoxItem Content="Front"/><ComboBoxItem Content="Middle"/><ComboBoxItem Content="Back"/></ComboBox></StackPanel>
+                                </UniformGrid>
+                            </StackPanel>
                         </Border>
+                        <TextBlock Text="Curve support (custom ease)" Foreground="{DynamicResource TextMuted}" FontSize="10" Margin="0,8,0,3"/>
+                        <UniformGrid Columns="2">
+                            <TextBox x:Name="SupportXBox" IsEnabled="False" ToolTip="Custom Bezier support X offset" Padding="5" Margin="0,0,5,0" Background="{DynamicResource BgInput}" Foreground="{DynamicResource TextPrimary}" TextChanged="OnSupportChanged"/>
+                            <TextBox x:Name="SupportYBox" IsEnabled="False" ToolTip="Custom Bezier support Y offset" Padding="5" Margin="5,0,0,0" Background="{DynamicResource BgInput}" Foreground="{DynamicResource TextPrimary}" TextChanged="OnSupportChanged"/>
+                        </UniformGrid>
+                        <Button x:Name="EditTriggerButton" Content="Edit trigger logic…" Style="{StaticResource DarkButton}" Padding="8" Margin="0,8,0,2" Click="OnEditTrigger" IsEnabled="False"/>
+                        <Button Content="Advanced properties…" Style="{StaticResource DarkButton}" Padding="8" Margin="0,2" Click="OnEditObjectProperties" IsEnabled="{Binding ElementName=ObjectList, Path=SelectedItem}"/>
+                        <Button Content="Delete selected" Style="{StaticResource DarkButton}" Padding="8" Margin="0,4,0,2" Click="OnDelete"/>
                     </StackPanel>
-
-                    <Separator Grid.Row="1" Background="{StaticResource BorderDark}" Margin="0,8"/>
-
-                    <!-- Properties Section -->
-                    <StackPanel Grid.Row="2">
-                        <TextBlock Text="PROPERTIES" Foreground="{StaticResource TextMuted}" FontWeight="Bold" FontSize="11" Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,4,4">
-                                <TextBlock Text="Position X" Foreground="{StaticResource TextMuted}" FontSize="10" Margin="0,0,0,2"/>
-                                <TextBox Background="#333337" Foreground="{StaticResource TextPrimary}" BorderBrush="{StaticResource BorderDark}" Padding="4" Text="0"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" Grid.Row="0" Margin="4,0,0,4">
-                                <TextBlock Text="Position Y" Foreground="{StaticResource TextMuted}" FontSize="10" Margin="0,0,0,2"/>
-                                <TextBox Background="#333337" Foreground="{StaticResource TextPrimary}" BorderBrush="{StaticResource BorderDark}" Padding="4" Text="0"/>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,4,4,0">
-                                <TextBlock Text="Rotation" Foreground="{StaticResource TextMuted}" FontSize="10" Margin="0,0,0,2"/>
-                                <TextBox Background="#333337" Foreground="{StaticResource TextPrimary}" BorderBrush="{StaticResource BorderDark}" Padding="4" Text="0°"/>
-                            </StackPanel>
-                        </Grid>
-                    </StackPanel>
-
-                    <Separator Grid.Row="3" Background="{StaticResource BorderDark}" Margin="0,8"/>
-
-                    <!-- Hybrid AI Co-pilot Section -->
-                    <Grid Grid.Row="4">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0" Text="AI CO-PILOT" Foreground="{StaticResource AccentBlue}" FontWeight="Bold" FontSize="11" Margin="0,0,0,6"/>
-
-                        <!-- Chat Output Log -->
-                        <ListBox x:Name="AiChatLog" Grid.Row="1" Background="#181818" Foreground="{StaticResource TextPrimary}" BorderBrush="{StaticResource BorderDark}" BorderThickness="1" Margin="0,0,0,6" Padding="6">
-                            <ListBoxItem Content="Co-pilot initialized. Type a prompt to generate level structures." Foreground="{StaticResource TextMuted}" FontSize="11"/>
-                        </ListBox>
-
-                        <!-- Input & Trigger Action -->
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox x:Name="AiInputBox" Grid.Column="0" Background="#333337" Foreground="{StaticResource TextPrimary}" BorderBrush="{StaticResource BorderDark}" BorderThickness="1" Padding="6" VerticalContentAlignment="Center" Margin="0,0,4,0" FontSize="11"/>
-                            <Button Grid.Column="1" Content="Send" Style="{StaticResource PrimaryButton}" Padding="10,4" Click="OnSendAiPrompt"/>
-                        </Grid>
-                    </Grid>
+                    <Border Grid.Row="1" Margin="0,12,0,0" Padding="10" Background="{DynamicResource BgHeader}" CornerRadius="4">
+                        <StackPanel><TextBlock Text="TIPS" Foreground="{DynamicResource AccentBlue}" FontWeight="Bold" FontSize="11" Margin="0,0,0,6"/><TextBlock Text="Select and drag objects on canvas. Scrub or drag key markers on the timeline. Add transform keys, choose easing, and preview with Play. Ctrl+C / Ctrl+V copies keys; Ctrl+Z / Ctrl+Y undo and redo." Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" FontSize="12"/></StackPanel>
+                    </Border>
+                    <TextBlock Grid.Row="2" x:Name="SelectionStatus" Text="No selection" Foreground="{DynamicResource TextMuted}" FontSize="11" Margin="2,10,0,0"/>
                 </Grid>
             </Border>
-        </Grid>
-
-        <!-- STATUS BAR -->
-        <Border Grid.Row="3" Background="{StaticResource BgHeader}" BorderBrush="{StaticResource BorderDark}" BorderThickness="0,1,0,0" Padding="10,0">
-            <Grid VerticalAlignment="Center">
-                <TextBlock Text="00:00.00" Foreground="{StaticResource TextMuted}" FontSize="11"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="100% | Snap: 16px" Foreground="{StaticResource TextMuted}" FontSize="11"/>
-                </StackPanel>
+                    </Grid>
+                    <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" ShowsPreview="True" Background="{DynamicResource BorderDark}"/>
+                    <Border Grid.Row="2" Background="{DynamicResource BgPanel}" BorderBrush="{DynamicResource BorderDark}" BorderThickness="0,1,0,0" Padding="10,6">
+            <Grid>
+                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                <DockPanel Grid.Row="0" Margin="0,0,0,6">
+                    <TextBlock Text="PREFAB BAR" Foreground="{DynamicResource TextMuted}" FontWeight="Bold" FontSize="11" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <ComboBox x:Name="PrefabPackBox" Width="190" SelectionChanged="OnPrefabPackChanged" Margin="0,0,8,0" ToolTip="Choose a prefab pack"/>
+                    <TextBox x:Name="PrefabSearchBox" Width="190" Padding="5" TextChanged="OnPrefabSearchChanged" ToolTip="Search prefabs and textures" Margin="0,0,8,0"/>
+                    <TextBlock x:Name="PrefabCountLabel" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                </DockPanel>
+                <ListBox x:Name="PrefabList" Grid.Row="1" SelectionChanged="OnPrefabSelected" PreviewMouseLeftButtonDown="OnPrefabMouseDown" PreviewMouseMove="OnPrefabMouseMove" Background="{DynamicResource BgInput}" BorderBrush="{DynamicResource BorderDark}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.CanContentScroll="False" VirtualizingPanel.IsVirtualizing="False">
+                    <ListBox.ItemsPanel><ItemsPanelTemplate><WrapPanel Orientation="Horizontal"/></ItemsPanelTemplate></ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="104" Height="82" Margin="3" Padding="5" Background="{DynamicResource BgPanel}" BorderBrush="{DynamicResource BorderDark}" BorderThickness="1" CornerRadius="4">
+                                <Grid>
+                                    <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                    <Grid>
+                                        <Image Source="{Binding Preview}" Stretch="Uniform" Margin="2"/>
+                                        <TextBlock Text="{Binding Icon}" FontSize="26" Foreground="{DynamicResource TextMuted}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
+                                    <TextBlock Grid.Row="1" Text="{Binding Name}" FontSize="9" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button x:Name="PrefabMoreButton" Grid.Row="2" Content="Load more prefabs" Style="{StaticResource DarkButton}" Padding="8,5" Margin="0,5,0,0" Click="OnLoadMorePrefabs"/>
             </Grid>
+        </Border>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Dynamic Editor">
+                <Border Background="{DynamicResource BgPanel}" BorderBrush="{DynamicResource BorderDark}" BorderThickness="1" CornerRadius="6" Padding="10">
+            <Grid>
+                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="ANIMATION" Foreground="{DynamicResource TextMuted}" FontWeight="Bold" FontSize="11" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <Button x:Name="PlayButton" Content="▶ Play" Style="{StaticResource PrimaryButton}" Padding="11,5" Margin="0,0,6,0" Click="OnPlayPause"/>
+                    <Button Content="■ Stop" Style="{StaticResource DarkButton}" Padding="10,5" Margin="0,0,12,0" Click="OnStopPlayback"/>
+                    <Button Content="+ Key" Style="{StaticResource DarkButton}" Padding="10,5" Margin="0,0,5,0" Click="OnAddKeyframe"/>
+                    <Button Content="− Key" Style="{StaticResource DarkButton}" Padding="10,5" Margin="0,0,12,0" Click="OnDeleteKeyframe"/>
+                    <CheckBox x:Name="OnionToggle" Content="Onion skin" IsChecked="True" Checked="OnTimelineChanged" Unchecked="OnTimelineChanged" Foreground="{DynamicResource TextPrimary}" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBlock Text="Ease" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <ComboBox x:Name="EaseBox" Width="105" SelectedIndex="1" SelectionChanged="OnEaseChanged">
+                        <ComboBoxItem Content="Ease In" Tag="EaseIn"/><ComboBoxItem Content="Linear" Tag="Linear"/>
+                        <ComboBoxItem Content="Ease Out" Tag="EaseOut"/><ComboBoxItem Content="Custom" Tag="Custom"/>
+                    </ComboBox>
+                    <TextBlock Text="End" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="10,0,4,0"/><TextBox x:Name="TotalFramesBox" Text="300" Width="46" LostFocus="OnTimelineSettingsChanged" Padding="3"/><TextBlock Text="FPS" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="8,0,4,0"/><TextBox x:Name="FpsBox" Text="60" Width="40" LostFocus="OnTimelineSettingsChanged" Padding="3"/><TextBlock x:Name="FrameLabel" Text="Frame 0 / 300" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                </StackPanel>
+                <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="0,7,0,2">
+                    <Canvas x:Name="TimelineCanvas" Width="1200" Height="48" Background="{DynamicResource BgInput}" MouseLeftButtonDown="Timeline_MouseLeftButtonDown" MouseMove="Timeline_MouseMove" MouseLeftButtonUp="Timeline_MouseLeftButtonUp"/>
+                </ScrollViewer>
+                <Slider x:Name="FrameSlider" Grid.Row="2" Minimum="0" Maximum="300" Value="0" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="OnFrameChanged"/>
+            </Grid>
+                </Border>
+            </TabItem>
+        </TabControl>
+        <Border Grid.Row="3" Background="{DynamicResource BgHeader}" BorderBrush="{DynamicResource BorderDark}" BorderThickness="0,1,0,0" Padding="10,3">
+            <DockPanel><TextBlock x:Name="StatusText" Text="Ready" Foreground="{DynamicResource TextMuted}" FontSize="11"/><TextBlock x:Name="ObjectCountText" DockPanel.Dock="Right" Text="0 objects" Foreground="{DynamicResource TextMuted}" FontSize="11" HorizontalAlignment="Right"/></DockPanel>
         </Border>
     </Grid>
 </Window>

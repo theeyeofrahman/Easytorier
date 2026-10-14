@@ -8,4 +8,11 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="Assets\VectorTextures\**\*.png" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Assets\VectorTextures\**\*.jpg" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Assets\VectorTextures\**\*.jpeg" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Assets\TriggerTemplates.xml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

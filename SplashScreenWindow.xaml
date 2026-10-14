@@ -1,0 +1,57 @@
+<Window x:Class="Easytorier.SplashScreenWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Easytorier - Level Editor" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+
+    <Border Background="{DynamicResource BgDark}" BorderBrush="{DynamicResource BorderDark}" BorderThickness="1" CornerRadius="12">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Custom Title Bar -->
+            <Grid Grid.Row="0" Margin="16,12,16,0">
+                <TextBlock Text="EASYTORIER v1.0" Foreground="{DynamicResource TextMuted}" FontSize="11" FontWeight="Bold" VerticalAlignment="Center"/>
+                <Button Content="✕" Foreground="{DynamicResource TextMuted}" Background="Transparent" BorderThickness="0" HorizontalAlignment="Right" FontSize="14" Cursor="Hand" Click="OnCloseClick"/>
+            </Grid>
+
+            <!-- Main Splash Body -->
+            <Grid Grid.Row="1" Margin="40,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="260"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left Branding / Banner -->
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="EASYTORIER" Foreground="{DynamicResource AccentBlue}" FontSize="42" FontWeight="Black" LetterSpacing="2"/>
+                    <TextBlock Text="UNITY-INSPIRED VECTOR LEVEL EDITOR" Foreground="{DynamicResource TextPrimary}" FontSize="14" FontWeight="SemiBold" Margin="2,4,0,16"/>
+                    <TextBlock Text="Build, test, and generate high-performance parkour levels with integrated local AI assistance." Foreground="{DynamicResource TextMuted}" FontSize="12" TextWrapping="Wrap" MaxWidth="380" HorizontalAlignment="Left" LineHeight="18"/>
+                </StackPanel>
+
+                <!-- Right Menu Action Column -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <Button Content="🚀 START EDITOR" Style="{StaticResource PrimaryButton}" Height="45" Margin="0,0,0,10" Click="OnStartEditorClick"/>
+                    <Button Content="📁 PROJECTS MANAGER" Style="{StaticResource DarkButton}" Height="40" Margin="0,0,0,10" Click="OnOpenProjectsClick"/>
+                    <Button Content="⚙️ SETTINGS" Style="{StaticResource DarkButton}" Height="40" Margin="0,0,0,10" Click="OnOpenSettingsClick"/>
+                    <Button Content="🎮 PARKOUR ARCADE" Style="{StaticResource DarkButton}" Height="40" Margin="0,0,0,10" Click="OnOpenMinigameClick"/>
+                    <Button Content="❌ EXIT" Style="{StaticResource DarkButton}" Height="36" Margin="0,10,0,0" Click="OnCloseClick"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Footer -->
+            <Border Grid.Row="2" Background="{DynamicResource BgHeader}" CornerRadius="0,0,11,11" Padding="16,10">
+                <Grid>
+                    <TextBlock Text="Ready to run." Foreground="{DynamicResource TextMuted}" FontSize="11"/>
+                    <TextBlock Text=".NET 10.0 WPF Engine" Foreground="{DynamicResource TextMuted}" FontSize="11" HorizontalAlignment="Right"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,115 @@
+<Window x:Class="Easytorier.TriggerEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Trigger Logic Editor" Width="1100" Height="760" MinWidth="920" MinHeight="650"
+        WindowStartupLocation="CenterOwner" Background="{DynamicResource BgDark}" Foreground="{DynamicResource TextPrimary}">
+    <Grid Margin="16">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Text="TRIGGER LOGIC" FontWeight="Bold" FontSize="18" Foreground="{DynamicResource TextPrimary}"/>
+            <TextBlock x:Name="ObjectLabel" Text="Edit events, conditions, actions, variables, and keep exact XML." Foreground="{DynamicResource TextMuted}" Margin="0,4,0,0"/>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="250"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="{DynamicResource BgPanel}" BorderBrush="{DynamicResource BorderDark}" BorderThickness="1" CornerRadius="6" Padding="12">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top">
+                        <TextBlock Text="LOOPS" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,8"/>
+                        <WrapPanel Margin="0,0,0,8">
+                            <Button Content="+ Loop" Style="{StaticResource PrimaryButton}" Padding="9,6" Margin="0,0,5,0" Click="OnAddLoop"/>
+                            <Button Content="− Remove" Style="{StaticResource DarkButton}" Padding="9,6" Click="OnRemoveLoop"/>
+                        </WrapPanel>
+                        <ComboBox x:Name="TemplateBox" Margin="0,0,0,6" ToolTip="Insert a library template"/>
+                        <Button Content="Insert template" Style="{StaticResource DarkButton}" Padding="8,6" Margin="0,0,0,8" Click="OnAddTemplate"/>
+                    </StackPanel>
+                    <ListBox x:Name="LoopList" Background="{DynamicResource BgInput}" Foreground="{DynamicResource TextPrimary}" BorderBrush="{DynamicResource BorderDark}" SelectionChanged="OnLoopSelected"/>
+                </DockPanel>
+            </Border>
+            <TabControl Grid.Column="2" x:Name="EditorTabs">
+                <TabItem Header="Events">
+                    <Grid Margin="12">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="150"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <DockPanel Grid.Row="0" Margin="0,0,0,8">
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <Button Content="Remove event" Style="{StaticResource DarkButton}" Padding="9,6" Margin="0,0,6,0" Click="OnRemoveEvent"/>
+                                <Button Content="Add event" Style="{StaticResource PrimaryButton}" Padding="10,6" Click="OnAddEvent"/>
+                            </StackPanel>
+                            <ComboBox x:Name="EventCatalogBox" Margin="0,0,8,0" DisplayMemberPath="Display"/>
+                        </DockPanel>
+                        <ListBox x:Name="EventList" Grid.Row="1" Background="{DynamicResource BgInput}" Foreground="{DynamicResource TextPrimary}" BorderBrush="{DynamicResource BorderDark}" SelectionChanged="OnEventSelected"/>
+                        <DataGrid x:Name="EventParamsGrid" Grid.Row="2" AutoGenerateColumns="False" CanUserAddRows="False" HeadersVisibility="Column" Margin="0,8,0,0">
+                            <DataGrid.Columns><DataGridTextColumn Header="XML attribute" Binding="{Binding Attr}" IsReadOnly="True" Width="*"/><DataGridTextColumn Header="Value" Binding="{Binding Value, UpdateSourceTrigger=PropertyChanged}" Width="2*"/></DataGrid.Columns>
+                        </DataGrid>
+                        <Button Grid.Row="3" Content="Apply event values" Style="{StaticResource DarkButton}" Padding="8,5" HorizontalAlignment="Right" Margin="0,6,0,0" Click="OnApplyEvent"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Conditions">
+                    <Grid Margin="12">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <WrapPanel Grid.Row="0" Margin="0,0,0,8">
+                            <ComboBox x:Name="ConditionKindBox" Width="130" Margin="0,0,7,0"/>
+                            <Button Content="Add condition" Style="{StaticResource PrimaryButton}" Padding="9,6" Margin="0,0,7,0" Click="OnAddCondition"/>
+                            <Button Content="Remove" Style="{StaticResource DarkButton}" Padding="9,6" Click="OnRemoveCondition"/>
+                        </WrapPanel>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <ListBox x:Name="ConditionList" Background="{DynamicResource BgInput}" Foreground="{DynamicResource TextPrimary}" BorderBrush="{DynamicResource BorderDark}" SelectionChanged="OnConditionSelected"/>
+                            <Border Grid.Column="2" Background="{DynamicResource BgPanel}" BorderBrush="{DynamicResource BorderDark}" BorderThickness="1" Padding="12">
+                                <StackPanel>
+                                    <TextBlock Text="Selected condition" FontWeight="Bold" Foreground="{DynamicResource TextMuted}" Margin="0,0,0,12"/>
+                                    <ComboBox x:Name="CompareBox" Margin="0,0,0,8"/>
+                                    <TextBlock Text="Left value" Foreground="{DynamicResource TextMuted}"/><TextBox x:Name="CondLeftBox" Margin="0,3,0,8" Padding="6"/>
+                                    <TextBlock Text="Right value" Foreground="{DynamicResource TextMuted}"/><TextBox x:Name="CondRightBox" Margin="0,3,0,8" Padding="6"/>
+                                    <CheckBox x:Name="CondNotBox" Content="Invert (Not)" Foreground="{DynamicResource TextPrimary}" Margin="0,3,0,8"/>
+                                    <Button Content="Apply condition" Style="{StaticResource DarkButton}" Padding="8,6" Click="OnApplyCondition"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        <TextBlock Grid.Row="2" Text="Groups and uncommon condition nodes are preserved in XML; edit the XML tab for advanced nesting." Foreground="{DynamicResource TextMuted}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Actions">
+                    <Grid Margin="12">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="150"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <DockPanel Grid.Row="0" Margin="0,0,0,8">
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <Button Content="Add choose group" Style="{StaticResource DarkButton}" Padding="9,6" Margin="0,0,6,0" Click="OnAddChoose"/>
+                                <Button Content="Remove" Style="{StaticResource DarkButton}" Padding="9,6" Click="OnRemoveAction"/>
+                            </StackPanel>
+                            <Button Content="Add action" Style="{StaticResource PrimaryButton}" Padding="10,6" DockPanel.Dock="Right" Margin="0,0,6,0" Click="OnAddAction"/>
+                            <ComboBox x:Name="ActionCatalogBox" Margin="0,0,8,0" DisplayMemberPath="Display"/>
+                        </DockPanel>
+                        <ListBox x:Name="ActionList" Grid.Row="1" Background="{DynamicResource BgInput}" Foreground="{DynamicResource TextPrimary}" BorderBrush="{DynamicResource BorderDark}" SelectionChanged="OnActionSelected"/>
+                        <DataGrid x:Name="ActionParamsGrid" Grid.Row="2" AutoGenerateColumns="False" CanUserAddRows="False" HeadersVisibility="Column" Margin="0,8,0,0">
+                            <DataGrid.Columns><DataGridTextColumn Header="XML attribute" Binding="{Binding Attr}" IsReadOnly="True" Width="*"/><DataGridTextColumn Header="Value" Binding="{Binding Value, UpdateSourceTrigger=PropertyChanged}" Width="2*"/></DataGrid.Columns>
+                        </DataGrid>
+                        <Button Grid.Row="3" Content="Apply action values" Style="{StaticResource DarkButton}" Padding="8,5" HorizontalAlignment="Right" Margin="0,6,0,0" Click="OnApplyAction"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Variables">
+                    <Grid Margin="12">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Button Content="Add variable" Style="{StaticResource PrimaryButton}" Padding="10,6" Margin="0,0,6,0" Click="OnAddVariable"/>
+                            <Button Content="Remove variable" Style="{StaticResource DarkButton}" Padding="10,6" Click="OnRemoveVariable"/>
+                        </StackPanel>
+                        <DataGrid x:Name="VariableGrid" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" HeadersVisibility="Column">
+                            <DataGrid.Columns><DataGridTextColumn Header="Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Width="*"/><DataGridTextColumn Header="Value" Binding="{Binding Value, UpdateSourceTrigger=PropertyChanged}" Width="2*"/><DataGridCheckBoxColumn Header="Locked" Binding="{Binding Locked}" IsReadOnly="True" Width="Auto"/></DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="XML">
+                    <Grid Margin="12">
+                        <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <TextBox x:Name="XmlEditor" Grid.Row="0" AcceptsReturn="True" AcceptsTab="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextWrapping="NoWrap" FontFamily="Consolas" FontSize="12" Padding="10"/>
+                        <Button Grid.Row="1" Content="Parse and apply XML" Style="{StaticResource PrimaryButton}" Padding="12,7" HorizontalAlignment="Right" Margin="0,8,0,0" Click="OnApplyXml"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Content="Cancel" Style="{StaticResource DarkButton}" Padding="16,8" Margin="0,0,8,0" IsCancel="True"/>
+            <Button Content="Save trigger" Style="{StaticResource PrimaryButton}" Padding="16,8" IsDefault="True" Click="OnSave"/>
+        </StackPanel>
+    </Grid>
+</Window>

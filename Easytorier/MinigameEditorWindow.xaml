@@ -1,0 +1,61 @@
+<Window x:Class="Easytorier.MinigameEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Easytorier - Parkour Arcade Editor" Height="480" Width="720"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+
+    <Border Background="{DynamicResource BgDark}" BorderBrush="{DynamicResource BorderDark}" BorderThickness="1" CornerRadius="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="38"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Custom Title Bar -->
+            <Grid Grid.Row="0" Background="{DynamicResource BgHeader}" Margin="1,1,1,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
+                    <TextBlock Text="🎮" FontSize="12" Margin="0,0,6,0"/>
+                    <TextBlock Text="Parkour Arcade Rules Editor" Foreground="{DynamicResource TextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                </StackPanel>
+                <Button Content="✕" Foreground="{DynamicResource TextMuted}" Background="Transparent" BorderThickness="0" HorizontalAlignment="Right" Width="38" FontSize="12" Cursor="Hand" Click="OnCloseClick"/>
+            </Grid>
+
+            <!-- Body -->
+            <Grid Grid.Row="1" Margin="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Rules Selector -->
+                <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                    <TextBlock Text="ARCADE MODES" Foreground="{DynamicResource TextMuted}" FontSize="10" FontWeight="Bold" Margin="4,0,0,8"/>
+                    <ListBox Background="{DynamicResource BgPanel}" BorderBrush="{DynamicResource BorderDark}" Height="340">
+                        <ListBoxItem Content="Speedrun Timer" Foreground="{DynamicResource TextPrimary}" Padding="8"/>
+                        <ListBoxItem Content="No-Fall Hardcore" Foreground="{DynamicResource TextPrimary}" Padding="8"/>
+                        <ListBoxItem Content="Low Gravity Run" Foreground="{DynamicResource TextPrimary}" Padding="8"/>
+                        <ListBoxItem Content="Endless Chase" Foreground="{DynamicResource TextPrimary}" Padding="8"/>
+                    </ListBox>
+                </StackPanel>
+
+                <!-- Parameters Inspector -->
+                <StackPanel Grid.Column="1" Background="{DynamicResource BgPanel}" Margin="16">
+                    <TextBlock Text="Mode Configuration" Foreground="{DynamicResource TextPrimary}" FontWeight="Bold" FontSize="14" Margin="0,0,0,16"/>
+
+                    <TextBlock Text="Time Limit (Seconds)" Foreground="{DynamicResource TextMuted}" FontSize="11" Margin="0,0,0,4"/>
+                    <TextBox Background="{DynamicResource BgDark}" Foreground="{DynamicResource TextPrimary}" BorderBrush="{DynamicResource BorderDark}" Padding="6" Text="60" Margin="0,0,0,12"/>
+
+                    <TextBlock Text="Gravity Multiplier" Foreground="{DynamicResource TextMuted}" FontSize="11" Margin="0,0,0,4"/>
+                    <TextBox Background="{DynamicResource BgDark}" Foreground="{DynamicResource TextPrimary}" BorderBrush="{DynamicResource BorderDark}" Padding="6" Text="1.0" Margin="0,0,0,12"/>
+
+                    <CheckBox Content="Enable Hunter Pursuit Bot" Foreground="{DynamicResource TextPrimary}" Margin="0,8,0,16"/>
+
+                    <Button Content="Save Arcade Rules" Background="{DynamicResource AccentBlue}" Foreground="{DynamicResource AccentText}" FontWeight="SemiBold" Height="36" BorderThickness="0" Cursor="Hand" Click="OnSaveClick"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

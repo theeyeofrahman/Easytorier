@@ -1,0 +1,58 @@
+<Window x:Class="Easytorier.ProjectManagerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Project Manager" Height="650" Width="980" MinHeight="560" MinWidth="820"
+        Background="{DynamicResource BgDark}" Foreground="{DynamicResource TextPrimary}"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="18">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+        <DockPanel Grid.Row="0" Margin="2,0,2,16">
+            <StackPanel DockPanel.Dock="Left">
+                <TextBlock Text="Projects" FontSize="25" FontWeight="Bold" Foreground="{DynamicResource TextPrimary}"/>
+                <TextBlock Text="Keep your levels organized and open them straight into the editor." Foreground="{DynamicResource TextMuted}" Margin="0,4,0,0"/>
+            </StackPanel>
+            <Button Content="Close" DockPanel.Dock="Right" Style="{DynamicResource DarkButton}" Padding="16,7" IsCancel="True" VerticalAlignment="Center"/>
+        </DockPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="280"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="{DynamicResource BgPanel}" BorderBrush="{DynamicResource BorderDark}" BorderThickness="1" CornerRadius="10" Padding="12">
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="YOUR WORKSPACES" Foreground="{DynamicResource TextMuted}" FontWeight="Bold" FontSize="10" Margin="2,0,0,9"/>
+                    <TextBox x:Name="ProjectSearchBox" Grid.Row="1" Padding="8" Margin="0,0,0,9" ToolTip="Search projects" TextChanged="ProjectSearchBox_TextChanged"/>
+                    <UniformGrid Grid.Row="2" Columns="3" Margin="0,0,0,9">
+                        <Button Content="＋ New" Style="{DynamicResource PrimaryButton}" Padding="6,8" Margin="0,0,4,0" Click="OnNewProjectClick" ToolTip="Create a project"/>
+                        <Button Content="Duplicate" Style="{DynamicResource DarkButton}" Padding="4,8" Margin="2,0" Click="OnDuplicateProjectClick" ToolTip="Duplicate selected project"/>
+                        <Button Content="Delete" Style="{DynamicResource DarkButton}" Padding="4,8" Margin="4,0,0,0" Click="OnDeleteProjectClick" ToolTip="Delete selected project"/>
+                    </UniformGrid>
+                    <ListBox x:Name="ProjectListBox" Grid.Row="3" Background="{DynamicResource BgHeader}" Foreground="{DynamicResource TextPrimary}" BorderBrush="{DynamicResource BorderDark}" SelectionChanged="ProjectListBox_SelectionChanged" MouseDoubleClick="ProjectListBox_MouseDoubleClick"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="2" Background="{DynamicResource BgPanel}" BorderBrush="{DynamicResource BorderDark}" BorderThickness="1" CornerRadius="10" Padding="18">
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="DetailsPanel" IsEnabled="False">
+                            <Border Height="210" Background="{DynamicResource BgInput}" BorderBrush="{DynamicResource BorderDark}" BorderThickness="1" CornerRadius="8" HorizontalAlignment="Stretch" Margin="0,0,0,8" Cursor="Hand" MouseLeftButtonDown="OnThumbnailClick">
+                                <Image x:Name="ThumbnailImage" Stretch="UniformToFill"/>
+                            </Border>
+                            <TextBlock Text="Click the preview to change the project thumbnail" Foreground="{DynamicResource TextMuted}" FontSize="10" HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                            <TextBlock Text="PROJECT NAME" Foreground="{DynamicResource TextMuted}" FontWeight="Bold" FontSize="10" Margin="1,0,0,5"/>
+                            <TextBox x:Name="ProjectNameBox" Padding="8" Margin="0,0,0,12" LostFocus="ProjectNameBox_LostFocus"/>
+                            <TextBlock Text="DESCRIPTION" Foreground="{DynamicResource TextMuted}" FontWeight="Bold" FontSize="10" Margin="1,0,0,5"/>
+                            <TextBox x:Name="ProjectDescBox" Padding="8" Height="96" AcceptsReturn="True" TextChanged="ProjectDescBox_TextChanged" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Margin="0,0,0,10" LostFocus="ProjectDescBox_LostFocus"/>
+                            <TextBlock x:Name="ProjectMetaText" Text="" Foreground="{DynamicResource TextMuted}" FontSize="11" Margin="1,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <UniformGrid Grid.Row="1" Columns="3" Margin="0,14,0,0">
+                        <Button Content="Open in Editor" Style="{DynamicResource PrimaryButton}" Padding="8" Margin="0,0,5,0" Click="OnEditProjectClick"/>
+                        <Button Content="Open Folder" Style="{DynamicResource DarkButton}" Padding="8" Margin="2,0" Click="OnOpenFolderClick"/>
+                        <Button Content="Export ZIP…" Style="{DynamicResource DarkButton}" Padding="8" Margin="5,0,0,0" Click="OnPublishClick"/>
+                    </UniformGrid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
