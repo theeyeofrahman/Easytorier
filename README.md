@@ -13,6 +13,10 @@ Easytorier is a Windows desktop level editor for building Vector-style parkour l
 - **Project Manager:** Search, create, rename, duplicate, and delete project workspaces; edit descriptions and thumbnails; open a project in the editor; open its folder; or export it as a ZIP package.
 - **Customization:** Edit and save themes, and manage the credits list from the app.
 
+## Documentation
+
+The user guides are built with Astro Starlight. See the [documentation site source](docs/README.md) for local preview and build instructions.
+
 ## Requirements
 
 - Windows
