@@ -62,8 +62,8 @@ Read the [Starlight guide](https://theeyeofrahman.github.io/Easytorier/) or the 
 ## Credits
 
 - **Zayden Rahman — Creator, lead programmer, and certified rooftop mastermind.** The vision, the persistence, the glorious “what if we added…” energy: Zayden is the driving force behind Easytorier's evolution into a creative studio. Platforms get placed; standards get raised.
-- **Ghosted** — Programming help.
-- **DC** — Programmer's close friend.
+- **Ghosted — Programming support and fellow builder.** An extra pair of hands behind the code, helping turn ambitious ideas into working features. A proper shout-out for the programming help that deserves more than a two-word credit.
+- **DC — Close friend and honorary studio legend.** A special place in the credits for the person behind the title “programmer's close friend.” Great projects deserve great company, and this studio has room for both.
 
 ## Ownership and attribution
 
