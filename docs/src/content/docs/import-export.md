@@ -1,31 +1,32 @@
 ---
-title: Import and export
-description: Save editable JSON levels and compile Vectorier XML.
+title: Save, import, and export
+description: Editable XML saves, legacy JSON, companion media, and Snail Runner playtesting.
 ---
 
-Easytorier uses JSON for editable work and Vectorier XML as a compiled interchange format.
+## Save XML
 
-## Save and reopen an editable level
+**Save XML**, **File → Save**, and Ctrl+S save editable XML. An XML comment preserves Easytorier's keyframes, IDs, hidden objects, and editor metadata alongside the level XML. Keep this comment to retain the complete editing state.
 
-Use **File → Save** or **Ctrl+S** to save the current level. Use **Save As** to choose a file and **File → Open** or **Ctrl+O** to reopen a JSON level. The project workflow keeps the editable file in the project's level.json.
+Saving is allowed before the level is playable. Saving over an existing file keeps a `.bak` of the previous version. New, Open, and Close offer Save/Discard/Cancel when there are changes.
 
-JSON retains Easytorier editing data such as object properties, animation keyframes, and parallax layers.
+**File → Open** reads saved XML, ordinary level XML, and legacy JSON. Saving an opened JSON project creates an XML counterpart. If the game XML has been edited externally, Easytorier imports those edits instead of restoring an outdated embedded snapshot; editor-only data may consequently be unavailable.
 
-## Import Vectorier XML
+## Import and library exports
 
-Choose **File → Import Vectorier XML** and select a level XML file. Imported objects are added to a level document for editing. The importer reads the Vectorier Track object groups, positions, dimensions, image class names, image metadata, and some static properties. It also preserves source XML on imported objects where available.
+**Import Vectorier XML…** offers level import/append options. Existing source XML is preserved where supported. Objects and Buildings library exports are reusable definitions rather than standalone playable levels. Use Import for these library formats.
 
-Imported files can use Vectorier-specific features that Easytorier does not expose as editable controls. Review the scene after import and verify the compiled result in Vectorier.
+## Export game XML
 
-## Compile to Vectorier XML
+**Export game XML…** creates game-only XML without the editor snapshot. **File → Compile to Vectorier XML…** reaches the same level-export workflow. Only visible objects are exported, grouped by parallax factor.
 
-Choose **Compile to Vectorier XML** from the toolbar or **File** menu and select an output location. Easytorier writes a Vectorier-style XML tree with a Root and Track, grouping visible objects by parallax factor.
+Export checks player model/spawn references. Images require real texture names. Editor-only `collision`, `collision50`, and `collision100` swatches from older projects export as platforms rather than missing game sprites.
 
-Image objects need a Vector texture selected; the XML ClassName is based on the texture filename. Keep the texture assets available to Vectorier at the destination. If an image has texture collision enabled, the exporter writes its collision representation alongside the image.
+Custom media is packaged into `level.assets/music/` and `level.assets/textures/`, with installation instructions. Copy those folders into the game's `Vector_Data/StreamingAssets/`, and put the level XML in `StreamingAssets/xmlroot/levels/`. Keep the assets folder with the editable XML when sharing or reopening it elsewhere.
 
-## Before sharing
+## Check and play
 
-1. Save the editable JSON source.
-2. Compile XML to a separate output file.
-3. Check image names and asset availability in the target Vectorier setup.
-4. Open or test the XML in Vectorier before publishing.
+**Check level** checks export readiness and reports missing player setup or solid ground. It does not run game physics or verify every installed texture.
+
+**Play in Vector** remembers your selected `Vector.exe`, exports into its StreamingAssets level folder, installs custom media, and launches the selected level. Debug options include platforms, triggers, Areas, detectors, hunter mode, and debug-UI visibility. It really starts the game; use Check level when you only need validation.
+
+Easytorier timeline keyframes are retained in editable saves and animation clips. They are not automatically compiled into native character `.bin` motion or every native game animation feature.

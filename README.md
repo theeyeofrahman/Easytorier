@@ -1,73 +1,70 @@
 # Easytorier
 
-Easytorier is a Windows desktop level editor for building Vector-style parkour levels. Arrange platforms and props on a canvas, animate objects on a timeline, and export levels as Vectorier XML.
+A Windows level studio for Vector-style parkour: build routes, animate objects, bring your own music and backgrounds, and export for Snail Runner. Made by **Zayden Rahman**, with enough ambition to give a level editor its own achievements.
 
-## Highlights
+## What you can do
 
-- **Level editor:** Place built-in objects and texture prefabs, drag prefabs onto the canvas, and edit object position, size, rotation, color, visibility, tags, opacity, and layer order.
-- **Viewport tools:** Select, move, resize, scale, and rotate objects. Pan with the middle mouse button or hold **Space** and drag. Use **Fit** to frame the canvas.
-- **Grid and snapping:** Toggle the grid and choose 8, 16, 32, or 64 unit snapping for object placement and transforms.
-- **Animation:** Add and move keyframes, preview playback, adjust easing, and inspect animated poses in the Dynamic Editor tab.
-- **Texture collision:** Mark an image as solid to compile a matching platform collision proxy.
-- **Vectorier XML:** Import existing Vectorier level XML and compile the current level to XML.
-- **Project Manager:** Search, create, rename, duplicate, and delete project workspaces; edit descriptions and thumbnails; open a project in the editor; open its folder; or export it as a ZIP package.
-- **Customization:** Edit and save themes, and manage the credits list from the app.
+- **Build together:** Ctrl/Shift-click or box-select objects, then move, resize, scale, rotate, copy, duplicate, or delete the group. Undo reverses the whole operation.
+- **Browse prefabs:** Large texture previews, pack filters, multi-word search, saved favorites, and drag-to-place or double-click-to-select placement.
+- **Arrange blocks:** Align edges, space blocks evenly, match widths/heights, generate staircases, frame surfaces, or create a parkour starter route.
+- **Navigate freely:** Pan with right-drag, middle-drag, Space+drag, or the Pan toggle. Ctrl+wheel zooms around the pointer. Snapping is optional.
+- **Animate:** Keyframes, easing, Auto Key, motion paths, onion skin, and animation-clip import/export. Object copy/paste preserves animation and collision settings.
+- **Use named Areas:** Choose a trigger preset such as `TriggerCameraStart`; supported presets export their trigger logic using your Area bounds.
+- **Set the atmosphere:** Import MP3 music and PNG/JPEG backgrounds; adjust music volume, background size, and parallax. Media travels in a companion assets folder.
+- **Build with Gemini:** Generate a proposed edit, review it, then apply it as one undoable batch. Choose a model, cancel requests, and regenerate stale plans.
+- **Inspect moves:** The Move Visualizer renders the runner body, animation bins, detector guides, and available authored obstacle examples.
+- **Personalize the studio:** Themes, quiet click/typing sounds, optional interface animations, Zephyr, a music player, and Arcade Rules tools.
+- **Collect extras:** 12 achievements award XP and unlock accent colors, badges, and cursor trails. Progress and equipped cosmetics persist locally.
 
-## Documentation
+## Start building
 
-The user guides are built with Astro Starlight. See the [documentation site source](docs/README.md) for local preview and build instructions.
+1. Open the level editor or create a project in Project Manager.
+2. Drag in platforms and textures. Add a **Player Start** named `DefaultSpawn` above solid ground.
+3. Select objects to transform them. Enable **Solid collision under this image** when floor art should be solid.
+4. Choose **Level → Music & background** for custom media.
+5. **Save XML** keeps the editable level, including animation and editor metadata. Older JSON projects still open.
+6. Use **Check level**, then **Export game XML…** for game-only XML, or **Play in Vector** with a compatible Snail Runner build.
 
-## Requirements
-
-- Windows
-- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-
-The app uses WPF and targets `net10.0-windows`.
+Keep `name.xml` together with `name.assets/` when moving a level with custom media. A successful XML check does not replace testing the level in the game. Editor animation keyframes are preserved in saved projects; they are not automatically converted into native character `.bin` animations.
 
 ## Build and run
 
-From the repository root, run:
+Requires Windows and the **.NET 10 SDK** to build. Easytorier uses WPF and targets `net10.0-windows`.
 
 ```powershell
 dotnet build .\Easytorier\Easytorier.csproj
 dotnet run --project .\Easytorier\Easytorier.csproj
 ```
 
-To launch a built executable directly, run:
-
-```powershell
-.\Easytorier\bin\Debug\net10.0-windows\Easytorier.exe
-```
-
-## Getting started
-
-1. Choose **Start Level Editor** to begin with an empty level, or open **Project Manager** to create or select a workspace.
-2. Use the prefab bar to add objects. Drag a prefab onto the viewport, or select a tool and click to place an object.
-3. Select an object to edit its properties in the inspector. Use the timeline controls in the **Dynamic Editor** tab for animation.
-4. Save a standalone level as JSON, or choose **Compile to Vectorier XML** when you are ready to export.
-
-Project workspaces are stored in the app's `Projects` folder beside the running executable. Each project contains a `description.txt` and a `level.json`; thumbnails are stored as `thumbnail.png`, `thumbnail.jpg`, or `thumbnail.jpeg`. Credits are saved in the current user's local Easytorier application data.
+Keep a built executable beside its accompanying files and `Assets` folder. Move Visualizer also needs compatible `runner.xml`, `moves.xml`, animation bins, and object libraries for authored obstacle examples.
 
 ## Keyboard shortcuts
 
 | Shortcut | Action |
 | --- | --- |
-| Ctrl+N | New level |
-| Ctrl+O | Open level |
-| Ctrl+S | Save level |
+| Ctrl+N / Ctrl+O / Ctrl+S | New / open / save XML |
+| Ctrl+A | Select all visible objects |
+| Ctrl+C / Ctrl+V | Copy / paste selected objects |
+| Ctrl+D / Delete | Duplicate / delete selection |
 | Ctrl+Z / Ctrl+Y | Undo / redo |
-| Ctrl+D | Duplicate selected object |
-| Delete | Delete selected object |
-| 1–5 | Select, Move, Resize, Scale, or Rotate tool |
-| Space + drag | Pan the viewport |
-| Middle mouse drag | Pan the viewport |
+| Ctrl+Shift+C / Ctrl+Shift+V | Copy / paste current keyframe |
+| 1–5 | Select / Move / Resize / Scale / Rotate |
+| Right-drag, middle-drag, or Space+drag | Pan |
+| Ctrl+wheel | Zoom around the pointer |
+| F1 | Show a tip |
+
+Text inputs retain their normal typing and clipboard behavior. Click the canvas before using editor shortcuts.
+
+## Guides
+
+Read the [Starlight guide](https://theeyeofrahman.github.io/Easytorier/) or the [guide source and build instructions](docs/README.md). Local documentation changes appear on the hosted site after its deployment workflow runs.
 
 ## Credits
 
-- **Zayden Rahman** — Main programmer and project lead, shaping the core editor and growing Easytorier into a more capable level studio.
+- **Zayden Rahman — Creator, lead programmer, and certified rooftop mastermind.** The vision, the persistence, the glorious “what if we added…” energy: Zayden is the driving force behind Easytorier's evolution into a creative studio. Platforms get placed; standards get raised.
 - **Ghosted** — Programming help.
 - **DC** — Programmer's close friend.
 
 ## Ownership and attribution
 
-Easytorier is an independent project. Vector is owned by Nekki, and the rights to Vectorier belong to DoritoTheChips and Sol. Easytorier is not affiliated with them.
+Easytorier is independent. Vector belongs to Nekki; Vectorier belongs to DoritoTheChips and Sol. Easytorier is not affiliated with them. Game assets and imported media retain their owners' rights.

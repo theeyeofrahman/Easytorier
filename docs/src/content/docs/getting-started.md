@@ -1,49 +1,34 @@
 ---
 title: Get started
-description: Install, launch, and create your first Easytorier level.
+description: Build your first level, save XML, and prepare it for Snail Runner.
 ---
 
-Easytorier runs as a Windows desktop app. You can use a built release or build the source with the .NET SDK.
+Easytorier is a Windows WPF app. To build from source, install the .NET 10 SDK and run these commands from the repository root:
 
-## Requirements
-
-- Windows
-- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) for building from source
-
-## Build and launch from source
-
-From the repository root, run:
-
-~~~powershell
+```powershell
 dotnet build .\Easytorier\Easytorier.csproj
 dotnet run --project .\Easytorier\Easytorier.csproj
-~~~
+```
 
-To launch a previously built Debug executable:
+When using a built copy, keep its executable, libraries, and Assets folder together.
 
-~~~powershell
-.\Easytorier\bin\Debug\net10.0-windows\Easytorier.exe
-~~~
+## Your first route
 
-## Choose a starting point
+1. Open **Start Level Editor** or choose a workspace in **Project Manager**.
+2. Drag a Platform from the prefab shelf onto the canvas. Newly placed objects are immediately editable.
+3. Add a **Player Start** named `DefaultSpawn` above the platform. The default player models reference this exact name.
+4. Add textures and enable collision for solid floor/wall images. Decorative images can remain non-solid.
+5. Select, move, resize, scale, or rotate objects. Ctrl/Shift-click adds to your selection; dragging empty canvas box-selects.
+6. Choose **Save XML**. Saving preserves editor settings and keyframes, even for an unfinished level. Older JSON files can still be opened.
+7. Run **Check level** before exporting or playing. Choose **Export game XML…** or configure **Play in Vector** with a compatible game build.
 
-The welcome screen offers:
+## Find the other features
 
-- **Start Level Editor** to open a blank level.
-- **Project Manager** to create or open a project workspace.
-- **Theme Editor** to customize the app colors.
-- **Arcade Rules** to edit minigame rules.
-- **Credits** to view and edit contributor credits.
+- **Level → Music & background** imports custom media.
+- **AI builder** generates reviewed editing plans using your Gemini key.
+- **Quick build → Block tools** arranges selected blocks.
+- **Tools → Move Visualizer** previews the runner and animation bins.
+- **Extras** contains achievements and cosmetics.
+- **View** controls themes, interface sounds, and interface animations.
 
-For a level you plan to keep developing, create a project first. A workspace keeps its level file and description together.
-
-## Make a first level
-
-1. Start the editor or open a project.
-2. Choose a built-in object from the left **Create** palette, or drag a texture prefab from the bar at the bottom onto the viewport.
-3. Select the placed object. Adjust its properties in the inspector on the right.
-4. Use the viewport toolbar to select, move, resize, scale, or rotate it.
-5. Save the editable level with **File → Save** or **Ctrl+S**.
-6. Choose **Compile to Vectorier XML** when you want an XML output for Vectorier.
-
-Easytorier saves level files as JSON for continued editing. XML is a separate compiled output.
+See [building levels](/Easytorier/building-levels/), [files and export](/Easytorier/import-export/), and [custom media](/Easytorier/guides/level-media/).

@@ -22,6 +22,11 @@ export default defineConfig({
           label: 'Create',
           items: [
             { label: 'Animation', slug: 'animation' },
+            { label: 'AI builder', slug: 'guides/ai-builder' },
+            { label: 'Music and backgrounds', slug: 'guides/level-media' },
+            { label: 'Areas and triggers', slug: 'guides/areas-and-triggers' },
+            { label: 'Move Visualizer', slug: 'guides/move-visualizer' },
+            { label: 'Cosmetics and achievements', slug: 'guides/extras' },
             { label: 'Themes and credits', slug: 'themes-and-credits' },
           ],
         },

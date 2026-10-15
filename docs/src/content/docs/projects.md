@@ -1,30 +1,26 @@
 ---
 title: Projects
-description: Create and manage Easytorier project workspaces.
+description: Organize levels, notes, thumbnails, and media in workspaces.
 ---
 
-The Project Manager keeps a level and its supporting notes in a named workspace. Open it from the welcome screen or the editor's **Project** menu.
+Open Project Manager from the welcome screen or **Project** menu. Create, search, rename, duplicate, and delete workspaces; double-click a project or choose **Edit Project** to open it. The built-in Vector workspace is protected from rename/delete.
 
-## Create and open a workspace
+Project descriptions and optional thumbnails help identify a workspace. Thumbnail names can be `thumbnail.png`, `thumbnail.jpg`, or `thumbnail.jpeg`. **Open Folder** opens the workspace in Explorer; **Export ZIP** packages it.
 
-Choose **New Project**, enter a name, and select the project to see its details. Double-click a project or choose **Edit Project** to open it in the level editor. Use the search field to filter the project list by name.
+## Files to keep
 
-The built-in **Vector** workspace is protected from rename and delete.
+Workspaces live in `Projects` beside the running executable. New projects use `level.xml`; older ones may contain `level.json`. The manager prefers XML when both exist. A typical project contains:
 
-## Manage project details
+```text
+My Project/
+  level.xml
+  level.assets/
+    music/
+    textures/
+  description.txt
+  thumbnail.png
+```
 
-The Project Manager supports renaming, duplicating, and deleting workspaces. It also lets you edit a project description and view a thumbnail when one exists. Description changes are saved when you leave the field or close the manager.
+The assets folder is only needed when the level uses custom media. Move/back up the whole workspace rather than its XML alone. A successful overwrite creates a `.bak` of the previous save.
 
-Project thumbnails can be named thumbnail.png, thumbnail.jpg, or thumbnail.jpeg and placed in the workspace folder.
-
-## Open the project folder and package it
-
-Use **Open Folder** to access the workspace in Windows Explorer. **Export ZIP** creates a ZIP package of the project folder.
-
-Projects are stored in a Projects folder beside the running Easytorier executable. A typical workspace contains:
-
-- **level.json** — editable level document
-- **description.txt** — project notes
-- **thumbnail image** — optional preview image
-
-Back up or copy the whole workspace folder when moving a project between installations.
+Achievements, cosmetic equipment, themes, favorites, preferences, and credits belong to the Windows user's editor profile; they are separate from project files.

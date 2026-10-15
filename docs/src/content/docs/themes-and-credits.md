@@ -1,18 +1,28 @@
 ---
-title: Themes and credits
-description: Customize the Easytorier palette and contributor list.
+title: Themes, feedback, and credits
+description: Customize the editor and meet the people behind it.
 ---
 
-## Edit the theme
+## Theme and interface feedback
 
-Open **Theme Editor** from the welcome screen or the editor's **View** menu. Pick a preset as a starting point, then change the theme name and color tokens. Valid values are #RRGGBB or #AARRGGBB; valid colors preview immediately.
+Open **View → Theme Editor…** or use the welcome screen. Start with a preset, edit color tokens, save to the theme library, or import/export a theme. Editor colors use `#RRGGBB` or `#AARRGGBB`; the game exporter converts them to the game's color order.
 
-The tokens cover the window, panel, header, canvas, and input surfaces; borders; primary and muted text; accent and accent text; and grid tile and grid line colors.
+**View → Interface sounds (quiet)** enables soft clicks and Trigger/Area-name typing ticks. Sounds are off by default. **Interface animations** controls status/selection fades and cosmetic trails. Cosmetic accents can override highlights; choose **Follow editor theme** in [Cosmetics](/Easytorier/guides/extras/) to restore the theme accent.
 
-Use the preview to check surfaces and text contrast. Save a theme to the local theme library, export it to a file to share, or import a theme file. The active theme is applied when Easytorier starts.
+## Other studio tools
 
-## Manage credits
+- **Tools → Talk with Zephyr…** opens the companion window.
+- **Tools → Music Player…** opens the editor music player; it is separate from level music settings.
+- **Arcade Rules** on the welcome screen opens the minigame rules editor.
+- **F1** or **Help → Show me a tip** brings up the tiny cat's tips.
 
-Open **Credits** from the welcome screen or the editor's **Help** menu. Add contributors when needed, edit or remove entries, and save the list. The default credits include Zayden Rahman, Ghosted, and DC.
+## Credits
 
-Credits are stored in the current Windows user's local Easytorier application data, separately from level projects.
+**Zayden Rahman — Creator, lead programmer, and certified rooftop mastermind.** The vision, the persistence, the glorious “what if we added…” energy: Zayden is the driving force behind Easytorier's evolution into a creative studio. Platforms get placed; standards get raised.
+
+- **Ghosted** — Programming help.
+- **DC** — Programmer's close friend.
+
+Open **Help → Credits…** or Credits on the welcome screen to manage the contributor list. Names/roles remain editable; credits save in `%LOCALAPPDATA%/Easytorier/credits.json`.
+
+Vector belongs to Nekki; Vectorier belongs to DoritoTheChips and Sol. Easytorier is an independent project and is not affiliated with them. Imported/game assets retain their original ownership.

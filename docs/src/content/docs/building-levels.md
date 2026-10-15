@@ -1,38 +1,44 @@
 ---
 title: Build a level
-description: Place and edit objects with the Easytorier viewport and prefab bar.
+description: Place prefabs, transform selections, arrange blocks, and navigate the canvas.
 ---
 
-## Add objects
+## Prefab shelf
 
-The left **Create** sidebar contains built-in tools such as Platform, Roof, Obstacle, Trigger, Spawn, Area, Camera, Textures, Item, Model, Particle, and Animation. Choose a tool, then click in the viewport to place an object. Use the search box to filter the creation tools.
+Use the pack selector and multi-word search to find textures or built-in objects. Select an item and choose **Favorite / unfavorite** to save it; **Favorites only** filters the shelf. **Clear** resets the search, and **Load more prefabs** expands the current batch.
 
-Texture prefabs appear in the horizontal bar at the bottom of the editor. Browse the bar by scrolling; drag a prefab into the viewport to place it. Texture packs are grouped by name under Easytorier/Assets/VectorTextures.
+Drag a prefab onto the canvas, or double-click it to select a placement tool and click to place. The shelf is resizable with the horizontal divider above it. Textures use original sizing, with very large images fitted within 512 canvas units; the previous 100-PPU placement mode is no longer active.
 
-## Viewport tools
+## Select and transform
 
-Select an object first, then choose a transform mode:
+- Click an object to select it; in Select mode, dragging it moves it.
+- Ctrl/Shift-click toggles objects on the canvas. In **Scene objects**, Ctrl-click toggles and Shift-click selects a range.
+- Drag empty canvas to box-select intersecting visible objects. Hold Ctrl/Shift to add to the existing selection.
+- **Ctrl+A** selects all visible objects. **Edit → Clear selection** deselects them.
 
-- **Select** selects objects without moving them.
-- **Move** drags the selected object.
-- **Resize** changes width and height by dragging.
-- **Scale** changes the object's size proportionally.
-- **Rotate** changes its angle by dragging.
+Choose **Move**, **Resize**, **Scale**, or **Rotate** to transform the selection. Group scale/rotation preserves the arrangement around the group. Copy, paste, duplicate, and delete also operate on the selection. Undo reverses a group operation as one edit. The inspector shows the active object's properties; it is not a batch property editor.
 
-The central viewport is resizable with the splitters around it. Drag the middle mouse button, or hold **Space** and drag, to pan. Use **Fit** to frame the canvas.
+**Ctrl+C/V** copies and pastes objects, including their keyframes and collision settings. Pasted objects get new IDs and a small position offset.
 
-## Grid and snapping
+## Navigate and snap
 
-The grid can be switched on or off with **Grid**. Choose a snap size of 8, 16, 32, or 64 units from the viewport controls. Snapping helps line up platforms and props; turn it off when you need free placement.
+Pan using right-drag, middle-drag, Space+left-drag, or the **Pan** toggle. Switch to an editing tool to leave Pan mode. Ctrl+wheel zooms around the pointer; **Fit** frames the canvas.
 
-## Inspect an object
+**Grid** controls visibility. **Snap** is off by default for continuous transforms; enable it for 8, 16, 32, or 64-unit alignment. Rotation snaps to 15-degree steps when enabled.
 
-Select an object to edit its properties in the right inspector. Available properties include its name, position, dimensions, rotation, color, opacity, tags, visibility, parallax factor, and layer order. Texture images also expose texture-specific settings, including collision.
+## Block tools
 
-Use **Ctrl+D** to duplicate the selected object and **Delete** to remove it. **Ctrl+Z** and **Ctrl+Y** undo and redo editor changes.
+Select blocks in Scene objects, then open **Quick build → Block tools** or **Plugins → Block tools**:
 
-## Texture collision
+- Align left, right, top, or bottom edges.
+- Space at least three blocks evenly horizontally or vertically.
+- Match widths or heights to the first block in the selection's object order.
+- Build five stairs, each rising 32 units, from the selected starting block.
 
-For a placed texture, enable its collision option in the inspector to request a matching collision platform when compiling to Vectorier XML. This is useful for solid floor or wall art. The collision proxy is generated during XML export; it is not a separate editable object in the canvas.
+**Surface Kit** builds floor/wall/corner arrangements around selected textures. **Parkour Route Starter** generates a short route. These operations support Undo.
 
-Check the exported XML in your target Vectorier workflow before relying on collision in a published level.
+## Collision and visuals
+
+Enable **Solid collision under this image** to export a Platform proxy. Rotated images use an axis-aligned bounding box, so the proxy may extend beyond sloped art. Use separate platform geometry for precise collision layouts.
+
+Bounds, pivots, collision proxies, onion skin, and motion paths can be toggled in the viewport. Colors entered as `#AARRGGBB` are converted to the game's `#RRGGBBAA` during export; intentional opacity is retained.

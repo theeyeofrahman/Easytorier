@@ -1,26 +1,22 @@
 ---
 title: Animation
-description: Animate level object transforms with the Dynamic Editor timeline.
+description: Keyframes, easing, animation clips, and editor playback.
 ---
 
-The **Dynamic Editor** is a separate tab in the main editor. It provides a timeline for editing and previewing object keyframes.
+Open **Dynamic editor** to animate level objects. This timeline is separate from the native character animations shown in [Move Visualizer](/Easytorier/guides/move-visualizer/).
 
-## Work with keyframes
+## Keyframes and playback
 
-Select an object and add keyframes at the frames where its pose should change. A keyframe stores position, size, rotation, and color. Move keyframes along the timeline to adjust when a change happens. The level document also stores the timeline frame count and frames per second.
+Select an object, choose a frame, and add a keyframe. Keys contain position, size, rotation, and color. Add another pose later in the timeline, then play the preview. Set the total frame count and FPS to control timing.
 
-Choose an easing preset for a keyframe:
+Easing options are Linear, Ease In, Ease Out, and Custom. Custom easing exposes support-point values. Timeline keys can be moved, and keyframe navigation jumps between poses.
 
-- **Linear** moves at a steady rate.
-- **Ease In** starts gently and speeds up.
-- **Ease Out** slows toward the next pose.
-- **Custom** uses support-point values for a custom curve.
+**Auto Key** records transformations at the current frame. With Auto Key off, completed object/group transforms also update the object's authored animation data so edits survive saving. Onion skin shows nearby poses; motion paths visualize travel.
 
-Use timeline playback to preview the motion. Save the level as JSON to keep its animation data.
+## Copy and share
 
-## Tips
+- Ctrl+Shift+C copies the current keyframe; Ctrl+Shift+V pastes it onto the selected object at the current frame.
+- Ctrl+C/V copies entire objects with their animation data. Ctrl+D duplicates the selection.
+- **File → Export Animation Clip…** writes an `.eanim.json` clip. **Import Animation Clip…** applies a clip to a selected object.
 
-- Add a keyframe at the starting pose and another at the destination.
-- Keep keyframes on the same object when animating that object's movement.
-- Preview after changing timing or easing.
-- XML export is intended for Vectorier level content; check the output in Vectorier to confirm that the target format supports the animation data you need.
+Save XML retains keyframes in the editor snapshot. Game-only XML export does not automatically turn editor keyframes into native `.bin` character animations.
